@@ -45,6 +45,7 @@ function buy(res) {
             var buyID = answer.buy - 1;
             var buyItem = res[buyID].stock_quantity;
             var stock = answer.quantity
+            var quantityLeft = buyItem - stock;
             console.log("stock quantity: " + buyItem);
             console.log("how much I'll like to buy: " + stock)
             switch (true) {
@@ -53,13 +54,32 @@ function buy(res) {
                     console.log("not enough");
                     break;
                 
-                case (count > stock):
-                    fulfill(answer,res);
+                case (buyItem > stock):
+                    fulfill(quantityLeft, buyID, res);
+                    cost(stock, res, buyID);
             }
         })
 }
 
-function fulfill(answer, res) {
-    
+function fulfill(quantityLeft, buyID, res) {
+    var product_name= `${res[buyID].product_name}`
+    var query = `UPDATE products SET stock_quantity= ${quantityLeft} WHERE id= ${res[buyID].id}`;
+    // console.log(quantityLeft);
+    connection.query(query, function (err) {
+        if (err) throw err;
+        console.log(`${product_name} has ${quantityLeft} left`);
+    })
 }
 
+function cost(stock, res, buyID){
+    var price = res[buyID].price
+    var costOfProduct = stock*price
+    console.log('Total cost of purchase $' + costOfProduct);
+}
+
+
+
+
+
+
+// quantity at 1 not going down to 0
