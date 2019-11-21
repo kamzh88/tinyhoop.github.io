@@ -51,10 +51,10 @@ function buy(res) {
             switch (true) {
 
                 case (buyItem < stock):
-                    console.log("not enough");
+                    console.log("Not enough items in stock");
                     break;
                 
-                case (buyItem > stock):
+                case (buyItem >= stock):
                     fulfill(quantityLeft, buyID, res);
                     cost(stock, res, buyID);
             }

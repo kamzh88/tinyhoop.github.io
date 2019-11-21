@@ -12,14 +12,49 @@ var connection = mysql.createConnection({
 inquirer
     .prompt([
         {
-            name: "chocies",
+            name: "choices",
             type: "list",
             message: "Menu Options",
-            chocies: ["View Products for Sale","View Low Inventory","Add to Inventory","Add New Product"]
+            choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
         }
     ])
-    .then(function(answer) {
-        if (answer.chocies === "View Products for Sale") {
+    .then(function (answer) {
 
+        switch (answer.choices) {
+            case "View Products for Sale":
+                viewProducts();
+                break;
+
+            case "View Low Inventory":
+                lowInventory();
+                console.log("View Low Inventory");
+                break;
+
+            case "Add to Inventory":
+                console.log("Add to Inventory");
+                break;
+
+            case "Add New Product":
+                console.log("Add New Product");
+                break;
+
+            default:
+                console.log("invalid input");
         }
     })
+
+function viewProducts() {
+    var query = "SELECT * FROM products"
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.log(`\n Items available for sale \n`)
+        for (var i = 0; i < res.length; i++) {
+            console.log(
+                ` ID: ${res[i].id} \n Product: ${res[i].product_name} \n Department: ${res[i].department_name} \n Price: $${res[i].price} \n Quantity: ${res[i].stock_quantity} \n`);
+        }
+    });
+}
+
+function lowInventory() {
+    
+}
