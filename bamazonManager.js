@@ -57,4 +57,12 @@ function viewProducts() {
 
 function lowInventory() {
     
+    var query = "SELECT * FROM products WHERE stock_quantity <= 5"
+    connection.query(query, function(err, res) {
+        for (var i = 0; i < res.length; i++) {
+            console.log(
+                ` ID: ${res[i].id} \n Product: ${res[i].product_name} \n Department: ${res[i].department_name} \n Price: $${res[i].price} \n Quantity: ${res[i].stock_quantity} \n`);
+        }
+        
+      });
 }
