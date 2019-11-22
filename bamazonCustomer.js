@@ -76,10 +76,3 @@ function cost(stock, res, buyID){
     var costOfProduct = stock*price
     console.log('Total cost of purchase $' + costOfProduct);
 }
-
-
-
-
-
-
-// quantity at 1 not going down to 0

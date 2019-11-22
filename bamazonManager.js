@@ -27,10 +27,10 @@ inquirer
 
             case "View Low Inventory":
                 lowInventory();
-                console.log("View Low Inventory");
                 break;
 
             case "Add to Inventory":
+                addInventory();
                 console.log("Add to Inventory");
                 break;
 
@@ -56,13 +56,66 @@ function viewProducts() {
 }
 
 function lowInventory() {
-    
     var query = "SELECT * FROM products WHERE stock_quantity <= 5"
-    connection.query(query, function(err, res) {
+    connection.query(query, function (err, res) {
         for (var i = 0; i < res.length; i++) {
             console.log(
                 ` ID: ${res[i].id} \n Product: ${res[i].product_name} \n Department: ${res[i].department_name} \n Price: $${res[i].price} \n Quantity: ${res[i].stock_quantity} \n`);
         }
-        
-      });
+    });
 }
+
+function addInventory() {
+    var query = "SELECT * FROM products"
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+
+        inquirer
+            .prompt([
+                {
+                    name: "choices",
+                    type: "rawlist",
+                    message: "Which item would you like to add?",
+                    choices: function () {
+                        var product_name = [];
+                        var product_id = [];
+                        for (var i = 0; i < res.length; i++) {
+                            product_name.push(res[i].product_name);
+                            product_id.push(res[i].product_id);
+                        }
+                        return product_name;
+                        return product_id;
+                    }
+                }
+            ])
+            .then(function (answer) {
+                var chosenName;
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].product_name === answer.choices) {
+                        chosenName = res[i];
+                    }
+                }
+                console.log(chosenName.id)
+                inquirer
+                    .prompt([
+                        {
+                            name: "choice",
+                            type: "input",
+                            message: "How many do you want to buy?"
+                        }
+                    ])
+                    .then(function (amount) {
+                        var queryUpdate = `UPDATE products SET stock_quantity= ${amount.choice} WHERE id = ${chosenName.id} `
+                            ;
+                        connection.query(queryUpdate, function (err, res) {
+                            if (err) throw err;
+
+                        })
+                    })
+            })
+
+    })
+
+
+}
+
