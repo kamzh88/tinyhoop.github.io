@@ -99,9 +99,9 @@ Having an active and healthy commit history on GitHub is important for your futu
 
   * If a manager selects `View Low Inventory`, then it should list all items with an inventory count lower than five.
 
-  <!-- * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store. -->
+  * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
 
-  * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
+  <!-- * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store. -->
 
 - - -
 
